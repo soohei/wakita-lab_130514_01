@@ -15,6 +15,7 @@ jQuery(function($){
   // FPS30で実行するループ
   setInterval(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ball.applyGravity(1);
     ball.update();
     ball.constrain(canvas.width, canvas.height);
     ball.draw();
@@ -48,6 +49,10 @@ Ball.prototype = {
     this.friction = 0.1;
 
     this.draw();
+  }
+  ,
+  applyGravity: function(gravity){
+    this.vy += gravity;
   }
   ,
   update: function(){
