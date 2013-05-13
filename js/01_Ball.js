@@ -7,18 +7,8 @@ jQuery(function($){
   // 2Dコンテキスト
   var ctx = canvas.getContext('2d');
 
-
-  // 円を描く
-
-  // 色の指定
-  ctx.strokeStyle = '#ffffff';
-  ctx.fillStyle = '#333333';
-
-  ctx.beginPath();
-  ctx.arc(70, 70, 50, 0, Math.PI * 2);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
+  // Ballインスタンスを生成
+  var ball = new Ball(ctx);
 });
 
 ////////////////////////////////
@@ -26,11 +16,29 @@ jQuery(function($){
 // 参考: http://soohei.net/441
 ////////////////////////////////
 
-var Ball = function(){
+var Ball = function(ctx){
   this.initialize.apply(this, arguments);
 }
 Ball.prototype = {
   //コンストラクタ
-  initialize: function() {
+  initialize: function(ctx) {
+    this.ctx = ctx;
+    this.draw();
+  }
+  ,
+  draw: function(){
+    var ctx = this.ctx;
+
+    // 円を描く
+
+    // 色の指定
+    ctx.strokeStyle = '#ffffff';
+    ctx.fillStyle = '#333333';
+
+    ctx.beginPath();
+    ctx.arc(70, 70, 50, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
   }
 }
