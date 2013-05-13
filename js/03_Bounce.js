@@ -48,6 +48,8 @@ Ball.prototype = {
     this.y = y;
     this.toX = x;
     this.toY = y;
+    this.vx = 0;
+    this.vy = 0;
     this.radius = (!isNaN(radius) && radius > 0) ? radius : 50;
     this.strokeColor = strokeColor ? strokeColor : '#ffffff';
     this.fillColor = fillColor ? fillColor : '#333333';
@@ -63,23 +65,25 @@ Ball.prototype = {
     // 目標に十分近づいたら速度を与えない
     if(Math.abs(disX) < 0.25){
       disX = 0;
-      this.x = toX;
+      this.x = this.toX;
     }
     if(Math.abs(disY) < 0.25){
       disY = 0;
-      this.y = toY;
+      this.y = this.toY;
     }
-    if(this.x == toX && this.y == toY){
+    if(this.x == this.toX && this.y == this.toY){
       return;
     }
 
     // 速度を計算
-    var vx = disX * 0.15;
-    var vy = disY * 0.15;
+    var accel = 20;
+    var slow = 1.2;
+    this.vx = (this.vx + disX / accel) / slow;
+    this.vy = (this.vy + disY / accel) / slow;
 
     // 座標に速度を加算
-    this.x += vx;
-    this.y += vy;
+    this.x += this.vx;
+    this.y += this.vy;
   }
   ,
   draw: function(){
