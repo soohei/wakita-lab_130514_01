@@ -9,12 +9,14 @@ jQuery(function($){
 
   // Ballインスタンスを生成
   var ball = new Ball(ctx, 70, 70);
-  ball.vx = 2;
+  ball.vx = 5;
+  ball.vy = 5;
 
   // FPS30で実行するループ
   setInterval(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ball.update();
+    ball.constrain(canvas.width, canvas.height);
     ball.draw();
   }, 33)
 });
@@ -45,6 +47,27 @@ Ball.prototype = {
   update: function(){
     this.x += this.vx;
     this.y += this.vy;
+  }
+  ,
+  constrain: function(w, h){
+    if(this.x > w - this.radius){
+      // 右にはみ出した
+      this.x = w - this.radius;
+      this.vx *= -1;
+    }else if(this.x < this.radius){
+      // 左にはみ出した
+      this.x = this.radius;
+      this.vx *= -1;
+    }
+    if(this.y > h - this.radius){
+      // 下にはみ出した
+      this.y = h - this.radius;
+      this.vy *= -1;
+    }else if(this.y < this.radius){
+      // 上にはみ出した
+      this.y = this.radius;
+      this.vy *= -1;
+    }
   }
   ,
   draw: function(){
