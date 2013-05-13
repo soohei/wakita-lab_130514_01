@@ -20,3 +20,17 @@ jQuery(function($){
   ctx.fill();
   ctx.stroke();
 });
+
+////////////////////////////////
+// JSでクラスの定義
+// 参考: http://soohei.net/441
+////////////////////////////////
+
+var Ball = function(){
+  this.initialize.apply(this, arguments);
+}
+Ball.prototype = {
+  //コンストラクタ
+  initialize: function() {
+  }
+}
