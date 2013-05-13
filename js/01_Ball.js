@@ -7,19 +7,36 @@ jQuery(function($){
   // 2Dコンテキスト
   var ctx = canvas.getContext('2d');
 
-  // Ballインスタンスを生成
-  var ball = new Ball(ctx, 70, 70);
-  ball.vx = 30;
-  ball.vy = 30;
+
+  // canvasをクリックしたらBallをつくる
+  var balls = [];
+
+  $('#01_Ball_canvas').mousedown(function(e) {
+    var rect = e.target.getBoundingClientRect();
+    var mouseX = e.pageX - rect.left;
+    var mouseY = e.pageY - rect.top;
+
+    // Ballインスタンスを生成
+    var ball = new Ball(ctx, mouseX, mouseY);
+    ball.vx = (Math.random() - 0.5) * 60;
+    ball.vy = (Math.random() - 0.5) * 60;
+
+    // Ball管理用の配列に追加する
+    balls.push(ball);
+  });
 
   // FPS30で実行するループ
   setInterval(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ball.applyGravity(1);
-    ball.update();
-    ball.constrain(canvas.width, canvas.height);
-    ball.draw();
-  }, 33)
+
+    for(var i = 0; i < balls.length; i++){
+      var ball = balls[i];
+      ball.applyGravity(1);
+      ball.update();
+      ball.constrain(canvas.width, canvas.height);
+      ball.draw();
+    }
+  }, 33);
 });
 
 ////////////////////////////////
