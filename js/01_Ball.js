@@ -8,7 +8,7 @@ jQuery(function($){
   var ctx = canvas.getContext('2d');
 
   // Ballインスタンスを生成
-  var ball = new Ball(ctx, 70, 70, 50, '#ffffff', '#333333');
+  var ball = new Ball(ctx, 70, 70);
 });
 
 ////////////////////////////////
@@ -26,9 +26,9 @@ Ball.prototype = {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
-    this.radius = radius;
-    this.strokeColor = strokeColor;
-    this.fillColor = fillColor;
+    this.radius = (!isNaN(radius) && radius > 0) ? radius : 50;
+    this.strokeColor = strokeColor ? strokeColor : '#ffffff';
+    this.fillColor = fillColor ? fillColor : '#333333';
     this.draw();
   }
   ,
