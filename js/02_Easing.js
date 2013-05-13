@@ -9,14 +9,15 @@ jQuery(function($){
 
   // ボールを2つつくる
   // 移動用
-  var ball_1 = new Ball(ctx, 250, canvas.height * 0.5);
+  var ball_1 = new Ball(ctx, 250, canvas.height * 0.5 - 100);
   // 目標位置用 (薄い色)
-  var ball_2 = new Ball(ctx, canvas.width - 250, canvas.height * 0.5, 50, '#4d4d4d', '#262626');
+  var ball_2 = new Ball(ctx, canvas.width - 250, canvas.height * 0.5 + 100, 50, '#4d4d4d', '#262626');
 
   $(window).keydown(function(e){
     console.log(e.keyCode)
     if(e.keyCode == 32){ // スペースキーが押された
       ball_1.toX = ball_2.x;
+      ball_1.toY = ball_2.y;
     }
   });
 
@@ -47,6 +48,7 @@ Ball.prototype = {
     this.x = x;
     this.y = y;
     this.toX = x;
+    this.toY = y;
     this.radius = (!isNaN(radius) && radius > 0) ? radius : 50;
     this.strokeColor = strokeColor ? strokeColor : '#ffffff';
     this.fillColor = fillColor ? fillColor : '#333333';
@@ -57,12 +59,15 @@ Ball.prototype = {
   update: function(){
     // 目標までの距離
     var disX = this.toX - this.x;
+    var disY = this.toY - this.y;
 
     // 速度を計算
     var vx = disX * 0.15;
+    var vy = disY * 0.15;
 
     // 座標に速度を加算
     this.x += vx;
+    this.y += vy;
   }
   ,
   draw: function(){
