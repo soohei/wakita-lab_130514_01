@@ -17,7 +17,8 @@ jQuery(function($){
     var mouseY = e.pageY - rect.top;
 
     // Ballインスタンスを生成
-    var ball = new Ball(ctx, mouseX, mouseY);
+    var radius = 40 + Math.random() * 40;
+    var ball = new Ball(ctx, mouseX, mouseY, radius);
     ball.vx = (Math.random() - 0.5) * 60;
     ball.vy = (Math.random() - 0.5) * 60;
 
