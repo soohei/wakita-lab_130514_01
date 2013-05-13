@@ -61,6 +61,19 @@ Ball.prototype = {
     var disX = this.toX - this.x;
     var disY = this.toY - this.y;
 
+    // 目標に十分近づいたら速度を与えない
+    if(Math.abs(disX) < 0.25){
+      disX = 0;
+      this.x = this.toX;
+    }
+    if(Math.abs(disY) < 0.25){
+      disY = 0;
+      this.y = this.toY;
+    }
+    if(this.x == this.toX && this.y == this.toY){
+      return;
+    }
+
     // 速度を計算
     var vx = disX * 0.15;
     var vy = disY * 0.15;
