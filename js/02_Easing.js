@@ -7,6 +7,21 @@ jQuery(function($){
   // 2Dコンテキスト
   var ctx = canvas.getContext('2d');
 
+  // ボールを2つつくる
+  // 移動用
+  var ball_1 = new Ball(ctx, 250, canvas.height * 0.5);
+  // 目標位置用 (薄い色)
+  var ball_2 = new Ball(ctx, canvas.width - 250, canvas.height * 0.5, 50, '#4d4d4d', '#262626');
+
+  // FPS30で実行するループ
+  setInterval(function(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ball_2.update();
+    ball_2.draw();
+    ball_1.update();
+    ball_1.draw();
+  }, 33);
+
 });
 
 ////////////////////////////////
