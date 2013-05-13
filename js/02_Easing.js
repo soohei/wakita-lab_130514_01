@@ -13,6 +13,13 @@ jQuery(function($){
   // 目標位置用 (薄い色)
   var ball_2 = new Ball(ctx, canvas.width - 250, canvas.height * 0.5, 50, '#4d4d4d', '#262626');
 
+  $(window).keydown(function(e){
+    console.log(e.keyCode)
+    if(e.keyCode == 32){ // スペースキーが押された
+      ball_1.toX = ball_2.x;
+    }
+  });
+
   // FPS30で実行するループ
   setInterval(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -39,6 +46,7 @@ Ball.prototype = {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
+    this.toX = x;
     this.radius = (!isNaN(radius) && radius > 0) ? radius : 50;
     this.strokeColor = strokeColor ? strokeColor : '#ffffff';
     this.fillColor = fillColor ? fillColor : '#333333';
@@ -47,7 +55,14 @@ Ball.prototype = {
   }
   ,
   update: function(){
+    // 目標までの距離
+    var disX = this.toX - this.x;
 
+    // 速度を計算
+    var vx = disX * 0.15;
+
+    // 座標に速度を加算
+    this.x += vx;
   }
   ,
   draw: function(){
