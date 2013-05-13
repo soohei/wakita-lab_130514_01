@@ -9,6 +9,11 @@ jQuery(function($){
 
 
   // 四角形を描く
+
+  // 色の指定
+  ctx.strokeStyle = '#ffffff';
+  ctx.fillStyle = '#333333';
+
   ctx.beginPath();
   ctx.moveTo(20, 20);
   ctx.lineTo(120, 20);
