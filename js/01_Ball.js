@@ -9,11 +9,12 @@ jQuery(function($){
 
   // Ballインスタンスを生成
   var ball = new Ball(ctx, 70, 70);
+  ball.vx = 2;
 
   // FPS30で実行するループ
   setInterval(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ball.x += 2;
+    ball.update();
     ball.draw();
   }, 33)
 });
@@ -33,10 +34,17 @@ Ball.prototype = {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
+    this.vx = 0;
+    this.vy = 0;
     this.radius = (!isNaN(radius) && radius > 0) ? radius : 50;
     this.strokeColor = strokeColor ? strokeColor : '#ffffff';
     this.fillColor = fillColor ? fillColor : '#333333';
     this.draw();
+  }
+  ,
+  update: function(){
+    this.x += this.vx;
+    this.y += this.vy;
   }
   ,
   draw: function(){
