@@ -15,5 +15,6 @@ jQuery(function($){
   ctx.lineTo(120, 120);
   ctx.lineTo(20, 120);
   ctx.closePath();
+  ctx.fill();
   ctx.stroke();
 });
