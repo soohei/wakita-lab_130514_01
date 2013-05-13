@@ -9,8 +9,8 @@ jQuery(function($){
 
   // Ballインスタンスを生成
   var ball = new Ball(ctx, 70, 70);
-  ball.vx = 5;
-  ball.vy = 5;
+  ball.vx = 30;
+  ball.vy = 30;
 
   // FPS30で実行するループ
   setInterval(function(){
@@ -41,10 +41,29 @@ Ball.prototype = {
     this.radius = (!isNaN(radius) && radius > 0) ? radius : 50;
     this.strokeColor = strokeColor ? strokeColor : '#ffffff';
     this.fillColor = fillColor ? fillColor : '#333333';
+
+    // 壁に当たった時の減速
+    this.bounce = 0.9;
+    // 摩擦
+    this.friction = 0.1;
+
     this.draw();
   }
   ,
   update: function(){
+    // 摩擦の計算
+    if(this.vx > this.friction){
+      this.vx -= this.friction;
+    }else if(this.vx < -this.friction){
+      this.vx += this.friction;
+    }
+    if(this.vy > this.friction){
+      this.vy -= this.friction;
+    }else if(this.vy < -this.friction){
+      this.vy += this.friction;
+    }
+
+    // 速度の加算
     this.x += this.vx;
     this.y += this.vy;
   }
@@ -53,20 +72,20 @@ Ball.prototype = {
     if(this.x > w - this.radius){
       // 右にはみ出した
       this.x = w - this.radius;
-      this.vx *= -1;
+      this.vx *= -this.bounce;
     }else if(this.x < this.radius){
       // 左にはみ出した
       this.x = this.radius;
-      this.vx *= -1;
+      this.vx *= -this.bounce;
     }
     if(this.y > h - this.radius){
       // 下にはみ出した
       this.y = h - this.radius;
-      this.vy *= -1;
+      this.vy *= -this.bounce;
     }else if(this.y < this.radius){
       // 上にはみ出した
       this.y = this.radius;
-      this.vy *= -1;
+      this.vy *= -this.bounce;
     }
   }
   ,
