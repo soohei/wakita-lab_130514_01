@@ -17,10 +17,10 @@ jQuery(function($){
     var mouseY = e.pageY - rect.top;
 
     // Ballインスタンスを生成
-    var radius = 40 + Math.random() * 40;
+    var radius = 40 + Math.random() * 100;
     var ball = new Ball(ctx, mouseX, mouseY, radius);
-    ball.vx = (Math.random() - 0.5) * 60;
-    ball.vy = (Math.random() - 0.5) * 60;
+    ball.vx = (Math.random() - 0.5) * 40;
+    ball.vy = (Math.random() - 0.5) * 40;
 
     // Ball管理用の配列に追加する
     balls.push(ball);
@@ -35,6 +35,16 @@ jQuery(function($){
       ball.applyGravity(1);
       ball.update();
       ball.constrain(canvas.width, canvas.height);
+    }
+    for(var i = 0; i < balls.length; i++){
+      for (var j = i + 1; j < balls.length; j++) {
+        var ballA = balls[i];
+        var ballB = balls[j];
+        ballA.checkCollision(ballB);
+      }
+    }
+    for(var i = 0; i < balls.length; i++){
+      var ball = balls[i];
       ball.draw();
     }
   }, 33);
@@ -62,7 +72,7 @@ Ball.prototype = {
     this.fillColor = fillColor ? fillColor : '#333333';
 
     // 壁に当たった時の減速
-    this.bounce = 0.9;
+    this.bounce = 0.8;
     // 摩擦
     this.friction = 0.1;
 
@@ -107,8 +117,8 @@ Ball.prototype = {
       this.vy *= -this.bounce;
     }else if(this.y < this.radius){
       // 上にはみ出した
-      this.y = this.radius;
-      this.vy *= -this.bounce;
+      // this.y = this.radius;
+      // this.vy *= -this.bounce;
     }
   }
   ,
@@ -126,5 +136,43 @@ Ball.prototype = {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+  }
+  ,
+  // 他のボールとの衝突判定をする
+  checkCollision: function(other)
+  {
+    var dis = this.getDistance(this, other);
+    if (dis < (this.radius + other.radius)){
+      // 中心方向とx軸との成す角を求める
+      var disX = other.x - this.x;
+      var disY = other.y - this.y;
+      var theta = Math.atan(Math.abs(disY / disX));
+      // 重なりを無くす
+      var len = (this.radius + other.radius) - dis;
+      other.x += len * disX / dis;
+      other.y += len * disY / dis;
+      // ベクトルをθ回転する
+      var vu = this.vx * Math.cos(theta) - this.vy * Math.sin(theta);
+      var vv = this.vx * Math.sin(theta) + this.vy * Math.cos(theta);
+      var other_vu = other.vx * Math.cos(theta) - other.vy * Math.sin(theta);
+      var other_vv = other.vx * Math.sin(theta) + other.vy * Math.cos(theta);
+      // u方向のみ運動量保存則を適用（質量が同じと仮定し速度交換）
+      var tmp = vu / 1;
+      vu = other_vu / 1;
+      other_vu = tmp;
+      // ベクトルを -θ回転する
+      this.vx = vu * Math.cos(theta) + vv * Math.sin(theta);
+      this.vy = -vu * Math.sin(theta) + vv * Math.cos(theta);
+      other.vx = other_vu * Math.cos(theta) + other_vv * Math.sin(theta);
+      other.vy = -other_vu * Math.sin(theta) + other_vv * Math.cos(theta);
+    }
+  }
+  ,
+  // 2点間の距離を求める
+  getDistance: function(p1, p2)
+  {
+    var disX = p1.x - p2.x;
+    var disY = p1.y - p2.y;
+    return Math.sqrt(disX * disX + disY * disY);
   }
 }
