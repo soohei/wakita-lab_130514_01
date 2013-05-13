@@ -9,6 +9,13 @@ jQuery(function($){
 
   // Ballインスタンスを生成
   var ball = new Ball(ctx, 70, 70);
+
+  // FPS30で実行するループ
+  setInterval(function(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ball.x += 2;
+    ball.draw();
+  }, 33)
 });
 
 ////////////////////////////////
