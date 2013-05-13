@@ -1,0 +1,27 @@
+body{
+  background: #fff;
+}
+
+#all{
+  width: 960px;
+  margin: 0 auto;
+}
+
+header{
+  padding-top: 40px;
+  padding-bottom: 30px;
+}
+
+canvas{
+  background: #262626;
+}
+
+footer{
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+footer ul li{
+  list-style: none;
+}
